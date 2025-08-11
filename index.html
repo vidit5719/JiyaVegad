@@ -1,12 +1,82 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <title>Open Dropbox PDF</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jiya Vegad Image Gallery</title>
+    <!-- Tailwind CSS CDN for easy styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Font: Inter for a modern look -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Apply the Inter font and a light background to the body */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f2f5;
+        }
+    </style>
 </head>
-<body?
-    <a href="https://dl.dropboxusercontent.com/scl/fi/2goyqcrf89naxph228hra/JVportfolio.pdf" target="_blank" rel="noopener noreferrer">
-        Open PDF in a new tab
-    </a>
+<body class="p-4 md:p-8">
+    <div class="max-w-6xl mx-auto bg-white p-6 rounded-xl shadow-lg">
+        <!-- Gallery Title -->
+        <h1 class="text-4xl font-bold text-center text-gray-800 mb-8">Jiya Vegad's Image Collection</h1>
+
+        <!-- Grid container for images -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+            <!-- Images will be dynamically inserted here by JavaScript -->
+        </div>
+    </div>
+
+    <script>
+        const imageContainer = document.querySelector('.grid');
+        const totalImages = 52;
+        // The basePath is './' assuming index.html and imgX.png files are in the *same* directory.
+        // For example, if your repository structure is:
+        // my-repo/
+        // ├── index.html
+        // ├── img1.png
+        // ├── img2.png
+        // └── ...
+        //
+        // If your images are in a subdirectory like 'JiyaVegad/', and index.html is in the root,
+        // you would change basePath to './JiyaVegad/'.
+        const basePath = './'; 
+
+        // Loop to create and append 52 image elements
+        for (let i = 1; i <= totalImages; i++) {
+            const imageUrl = `${basePath}img${i}.png`; // Constructs path like ./img1.png, ./img2.png, etc.
+
+            // Create a div for each image, acting as a card
+            const imgDiv = document.createElement('div');
+            imgDiv.className = 'relative group rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1';
+
+            // Create the image element
+            const imgElement = document.createElement('img');
+            imgElement.src = imageUrl;
+            imgElement.alt = `Image ${i}`;
+            imgElement.className = 'w-full h-48 object-cover rounded-lg transition-transform duration-300 group-hover:scale-105';
+            
+            // Fallback for images that fail to load: displays a placeholder with the image number
+            imgElement.onerror = function() {
+                this.src = `https://placehold.co/300x200/cccccc/333333?text=Image+${i}+Error`;
+                this.alt = `Image ${i} failed to load`;
+            };
+
+            // Create an overlay that appears on hover
+            const overlay = document.createElement('div');
+            overlay.className = 'absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg';
+            
+            // Text to display on the overlay (image number)
+            const imageNumberText = document.createElement('p');
+            imageNumberText.className = 'text-white text-lg font-semibold';
+            imageNumberText.textContent = `Image ${i}`;
+
+            // Append elements to their parent containers
+            overlay.appendChild(imageNumberText);
+            imgDiv.appendChild(imgElement);
+            imgDiv.appendChild(overlay);
+            imageContainer.appendChild(imgDiv);
+        }
+    </script>
 </body>
 </html>
