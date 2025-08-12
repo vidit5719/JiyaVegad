@@ -5,81 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Jiya Vegad</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Stylish Font -->
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
-    <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #000;
-            margin: 0;
-            padding: 0;
-            color: white;
-        }
-        header {
-            font-family: 'Playfair Display', serif;
-            position: sticky;
-            top: 0;
-            z-index: 50;
-            backdrop-filter: blur(10px);
-            background: rgba(0, 0, 0, 0.6);
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
-            color: #fff;
-            text-shadow: 0 0 5px rgba(255,255,255,0.4);
-        }
-        .image-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 20px 0;
-        }
-        .image-container img {
-            max-width: 100%;
-            height: auto;
-            margin-bottom: 20px;
-            background-color: #111;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.4);
-            opacity: 0;
-            transform: translateY(20px);
-            transition: all 0.6s ease-out;
-        }
-        .image-container img.loaded {
-            opacity: 1;
-            transform: translateY(0);
-        }
-        #toTopBtn {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: rgba(68, 68, 68, 0.9);
-            color: white;
-            border: none;
-            padding: 10px 15px;
-            border-radius: 50%;
-            cursor: pointer;
-            font-size: 18px;
-            display: none;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-            transition: background 0.3s ease;
-        }
-        #toTopBtn:hover {
-            background: rgba(100, 100, 100, 1);
-        }
-        #counter {
-            position: fixed;
-            top: 15px;
-            right: 20px;
-            background: rgba(0,0,0,0.7);
-            padding: 5px 10px;
-            border-radius: 5px;
-            font-size: 14px;
-            z-index: 60;
-        }
-    </style>
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Great+Vibes&display=swap" rel="stylesheet">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <!-- Header -->
-    <header class="text-center text-4xl font-bold py-4">Jiya Vegad</header>
+    <header id="mainHeader" class="text-center text-4xl font-bold py-4">
+        <span class="header-text">Jiya Vegad</span>
+    </header>
 
     <!-- Page counter -->
     <div id="counter">1 of 52</div>
@@ -90,60 +27,7 @@
     <!-- Go to Top Button -->
     <button id="toTopBtn">&#8679;</button>
 
-    <script>
-        const totalImages = 52;
-        const basePath = './'; // Change if needed
-        const gallery = document.getElementById('gallery');
-        const counter = document.getElementById('counter');
-        const toTopBtn = document.getElementById('toTopBtn');
-
-        // Create image placeholders
-        for (let i = 1; i <= totalImages; i++) {
-            const img = document.createElement('img');
-            img.dataset.src = `${basePath}img${i}.png`;
-            img.alt = `Image ${i}`;
-            img.loading = 'lazy';
-            gallery.appendChild(img);
-        }
-
-        // Lazy load with animation
-        const lazyLoad = (entries, observer) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    const img = entry.target;
-                    img.src = img.dataset.src;
-                    img.onload = () => img.classList.add('loaded');
-                    observer.unobserve(img);
-                }
-            });
-        };
-
-        const observer = new IntersectionObserver(lazyLoad, {
-            rootMargin: '300px'
-        });
-
-        document.querySelectorAll('img').forEach(img => observer.observe(img));
-
-        // Update page counter on scroll
-        window.addEventListener('scroll', () => {
-            const imgs = document.querySelectorAll('img');
-            let currentPage = 1;
-            imgs.forEach((img, index) => {
-                const rect = img.getBoundingClientRect();
-                if (rect.top <= window.innerHeight / 2 && rect.bottom >= window.innerHeight / 2) {
-                    currentPage = index + 1;
-                }
-            });
-            counter.textContent = `${currentPage} of ${totalImages}`;
-
-            // Show "Go to Top" button after scrolling down
-            toTopBtn.style.display = window.scrollY > 300 ? 'block' : 'none';
-        });
-
-        // Scroll to top when button clicked
-        toTopBtn.addEventListener('click', () => {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        });
-    </script>
+    <!-- Script -->
+    <script src="script.js" defer></script>
 </body>
 </html>
