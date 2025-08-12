@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jiya Vegad Scroll Gallery</title>
+    <title>Jiya Vegad PDF-Style Gallery</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
@@ -11,57 +11,43 @@
             font-family: 'Inter', sans-serif;
             background-color: #f0f2f5;
             margin: 0;
+            padding: 0;
         }
-        /* Snap scrolling for smooth navigation */
-        html, body {
-            height: 100%;
-            scroll-behavior: smooth;
-        }
-        .snap-container {
-            scroll-snap-type: y mandatory;
-            overflow-y: scroll;
-            height: 100vh;
-        }
-        .snap-slide {
-            scroll-snap-align: center;
-            height: 100vh;
+        .image-container {
             display: flex;
+            flex-direction: column;
             align-items: center;
-            justify-content: center;
+            padding: 20px 0;
         }
-        img {
-            max-width: 100%;
-            max-height: 90vh;
+        .image-container img {
+            max-width: 90%;
             height: auto;
-            width: auto;
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            margin-bottom: 20px;
+            background-color: #e5e7eb; /* light gray before load */
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
         }
     </style>
 </head>
 <body>
-    <div id="gallery" class="snap-container"></div>
+    <h1 class="text-2xl font-bold text-center py-6 bg-white shadow">Jiya Vegad's PDF Style Viewer</h1>
+    <div id="gallery" class="image-container"></div>
 
     <script>
         const totalImages = 52;
         const basePath = './'; // Change if needed
         const gallery = document.getElementById('gallery');
 
-        // Create slides with lazy loading
+        // Create image placeholders for lazy loading
         for (let i = 1; i <= totalImages; i++) {
-            const slide = document.createElement('div');
-            slide.className = 'snap-slide';
-
             const img = document.createElement('img');
-            img.dataset.src = `${basePath}img${i}.png`; // lazy-load src
+            img.dataset.src = `${basePath}img${i}.png`;
             img.alt = `Image ${i}`;
-            img.loading = 'lazy'; // browser lazy loading
-
-            slide.appendChild(img);
-            gallery.appendChild(slide);
+            img.loading = 'lazy'; // native lazy loading
+            gallery.appendChild(img);
         }
 
-        // Use Intersection Observer to load images only when near viewport
+        // Intersection Observer to load images when near viewport
         const lazyLoad = (entries, observer) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
@@ -73,7 +59,7 @@
         };
 
         const observer = new IntersectionObserver(lazyLoad, {
-            rootMargin: '200px' // start loading before image fully appears
+            rootMargin: '300px' // load a bit early for smoothness
         });
 
         document.querySelectorAll('img').forEach(img => observer.observe(img));
