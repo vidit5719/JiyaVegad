@@ -6,36 +6,28 @@ body {
     color: white;
 }
 
-/* Header Styling */
-header {
-    font-family: 'Great Vibes', cursive;
+/* Smooth header with Italiana font */
+.site-header {
+    font-family: 'Italiana', serif;
     position: sticky;
     top: 0;
     z-index: 50;
     backdrop-filter: blur(10px);
     background: rgba(0, 0, 0, 0.6);
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
-    color: #fff;
-    text-shadow: 0 0 5px rgba(255, 255, 255, 0.4);
+    color: #f8f5e9;
+    letter-spacing: 1px;
+    text-shadow: 0 0 5px rgba(255,255,255,0.4);
     transition: transform 0.4s ease, opacity 0.4s ease;
 }
 
-header.hide {
+/* Hide/Show animation */
+.site-header.hide {
     transform: translateY(-100%);
     opacity: 0;
 }
 
-.header-text {
-    display: inline-block;
-    animation: floatText 3s ease-in-out infinite;
-}
-
-@keyframes floatText {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-4px); }
-}
-
-/* Image Container */
+/* Gallery styling */
 .image-container {
     display: flex;
     flex-direction: column;
@@ -49,7 +41,7 @@ header.hide {
     margin-bottom: 20px;
     background-color: #111;
     border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.4);
     opacity: 0;
     transform: translateY(20px);
     transition: all 0.6s ease-out;
@@ -60,7 +52,7 @@ header.hide {
     transform: translateY(0);
 }
 
-/* Go to Top Button */
+/* Scroll to top button */
 #toTopBtn {
     position: fixed;
     bottom: 20px;
@@ -73,7 +65,7 @@ header.hide {
     cursor: pointer;
     font-size: 18px;
     display: none;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
     transition: background 0.3s ease;
 }
 
@@ -81,12 +73,12 @@ header.hide {
     background: rgba(100, 100, 100, 1);
 }
 
-/* Page Counter */
+/* Counter */
 #counter {
     position: fixed;
     top: 15px;
     right: 20px;
-    background: rgba(0, 0, 0, 0.7);
+    background: rgba(0,0,0,0.7);
     padding: 5px 10px;
     border-radius: 5px;
     font-size: 14px;
