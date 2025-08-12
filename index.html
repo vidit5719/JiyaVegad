@@ -3,64 +3,80 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jiya Vegad Photo Viewer</title>
+    <title>Jiya Vegad Scroll Gallery</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         body {
             font-family: 'Inter', sans-serif;
             background-color: #f0f2f5;
+            margin: 0;
+        }
+        /* Snap scrolling for smooth navigation */
+        html, body {
+            height: 100%;
+            scroll-behavior: smooth;
+        }
+        .snap-container {
+            scroll-snap-type: y mandatory;
+            overflow-y: scroll;
+            height: 100vh;
+        }
+        .snap-slide {
+            scroll-snap-align: center;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        img {
+            max-width: 100%;
+            max-height: 90vh;
+            height: auto;
+            width: auto;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
         }
     </style>
 </head>
-<body class="flex flex-col items-center justify-center min-h-screen p-4">
-    <div class="bg-white p-4 rounded-xl shadow-lg">
-        <h1 class="text-2xl font-bold text-center mb-4">Jiya Vegad's Image Viewer</h1>
-        
-        <!-- Image display -->
-        <div class="flex items-center justify-center">
-            <img id="photo" src="" alt="Current Image" class="rounded-lg shadow-md" loading="lazy">
-        </div>
-
-        <!-- Navigation buttons -->
-        <div class="flex justify-between mt-4">
-            <button id="prevBtn" class="bg-gray-300 px-4 py-2 rounded-lg hover:bg-gray-400">Previous</button>
-            <button id="nextBtn" class="bg-gray-300 px-4 py-2 rounded-lg hover:bg-gray-400">Next</button>
-        </div>
-
-        <!-- Image number -->
-        <p id="counter" class="mt-2 text-center text-gray-600"></p>
-    </div>
+<body>
+    <div id="gallery" class="snap-container"></div>
 
     <script>
         const totalImages = 52;
-        const basePath = './'; // Change if images are in a folder
-        let currentIndex = 1;
+        const basePath = './'; // Change if needed
+        const gallery = document.getElementById('gallery');
 
-        const photoElement = document.getElementById('photo');
-        const counterElement = document.getElementById('counter');
-        const prevBtn = document.getElementById('prevBtn');
-        const nextBtn = document.getElementById('nextBtn');
+        // Create slides with lazy loading
+        for (let i = 1; i <= totalImages; i++) {
+            const slide = document.createElement('div');
+            slide.className = 'snap-slide';
 
-        function loadImage(index) {
-            const imageUrl = `${basePath}img${index}.png`;
-            photoElement.src = imageUrl;
-            photoElement.alt = `Image ${index}`;
-            counterElement.textContent = `Image ${index} of ${totalImages}`;
+            const img = document.createElement('img');
+            img.dataset.src = `${basePath}img${i}.png`; // lazy-load src
+            img.alt = `Image ${i}`;
+            img.loading = 'lazy'; // browser lazy loading
+
+            slide.appendChild(img);
+            gallery.appendChild(slide);
         }
 
-        prevBtn.addEventListener('click', () => {
-            currentIndex = currentIndex > 1 ? currentIndex - 1 : totalImages;
-            loadImage(currentIndex);
+        // Use Intersection Observer to load images only when near viewport
+        const lazyLoad = (entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const img = entry.target;
+                    img.src = img.dataset.src;
+                    observer.unobserve(img);
+                }
+            });
+        };
+
+        const observer = new IntersectionObserver(lazyLoad, {
+            rootMargin: '200px' // start loading before image fully appears
         });
 
-        nextBtn.addEventListener('click', () => {
-            currentIndex = currentIndex < totalImages ? currentIndex + 1 : 1;
-            loadImage(currentIndex);
-        });
-
-        // Initial load
-        loadImage(currentIndex);
+        document.querySelectorAll('img').forEach(img => observer.observe(img));
     </script>
 </body>
 </html>
