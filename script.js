@@ -3,7 +3,7 @@ const basePath = './'; // Change if needed
 const gallery = document.getElementById('gallery');
 const counter = document.getElementById('counter');
 const toTopBtn = document.getElementById('toTopBtn');
-const header = document.getElementById('mainHeader');
+const header = document.querySelector('.site-header');
 
 let lastScrollTop = 0;
 
@@ -34,7 +34,7 @@ const observer = new IntersectionObserver(lazyLoad, {
 
 document.querySelectorAll('img').forEach(img => observer.observe(img));
 
-// Update page counter & header behavior
+// Update page counter & header show/hide on scroll
 window.addEventListener('scroll', () => {
     const imgs = document.querySelectorAll('img');
     let currentPage = 1;
@@ -49,17 +49,17 @@ window.addEventListener('scroll', () => {
     // Show "Go to Top" button after scrolling down
     toTopBtn.style.display = window.scrollY > 300 ? 'block' : 'none';
 
-    // Header hide/show animation
-    let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-    if (scrollTop > lastScrollTop && scrollTop > 100) {
+    // Smooth hide/show header
+    let scrollTop = window.scrollY || document.documentElement.scrollTop;
+    if (scrollTop > lastScrollTop && scrollTop > 80) {
         header.classList.add('hide');
     } else {
         header.classList.remove('hide');
     }
-    lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
+    lastScrollTop = scrollTop;
 });
 
-// Scroll to top
+// Scroll to top when button clicked
 toTopBtn.addEventListener('click', () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
 });
